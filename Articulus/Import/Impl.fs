@@ -73,7 +73,7 @@ module Impl =
     let importFiles (store: ArticulusStore) (resultHandler: ImportResult -> unit) (path: string) =
         scanDirectory path
         |> List.iter (fun p ->
-            match readFile path with
+            match readFile p with
             | Ok af -> importFile store af
             | Error e -> ImportResult.Failure $"Failed load file `{p}`. {e}"
             |> resultHandler)

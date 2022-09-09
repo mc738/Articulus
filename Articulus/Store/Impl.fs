@@ -112,7 +112,11 @@ type ArticulusStore(ctx: SqliteContext) =
     member _.AddArticle(name, title, order, date) = addArticle ctx name title order date
 
     member _.GetArticle(name) = fetchArticle ctx name
-    
+
+    member _.GetAllArticles() =
+        fetchAllArticles ctx
+        |> List.sortBy (fun ar -> ar.ArticleOrder)
+        
     member _.AddArticleVersion(name: string, isDraft: bool, lines: string list) =
         match fetchArticle ctx name with
         | Some ar ->
@@ -139,8 +143,7 @@ type ArticulusStore(ctx: SqliteContext) =
                 addArticleVersion ctx (Guid.NewGuid().ToString("n")) name 1 ms hash isDraft
                 AddArticleVersionResult.Added)
         | None -> AddArticleVersionResult.ArticleNotFound
-
-    
+  
     member _.GetLatestArticleVersion(name: string, includeDrafts: bool) =
         fetchArticle ctx name
         |> Option.bind (fun ar ->

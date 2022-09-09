@@ -13,14 +13,11 @@
         <Compile Include="Import\Metadata.fs" />
         <Compile Include="Import\Impl.fs" />
         <Compile Include="Rendering\Impl.fs" />
-        <Compile Include="Common.fs" />
-        <Compile Include="Import.fs" />
-        <Compile Include="Rendering.fs" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FDOM.Core" Version="0.2.0" />
-      <PackageReference Include="FDOM.Rendering.Html" Version="0.2.0" />
+      <PackageReference Include="FDOM.Core" Version="0.2.1" />
+      <PackageReference Include="FDOM.Rendering.Html" Version="0.2.1" />
       <PackageReference Include="Fluff.Core" Version="0.3.0" />
       <PackageReference Include="Freql.Sqlite" Version="0.7.1" />
     </ItemGroup>
