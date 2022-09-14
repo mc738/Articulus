@@ -13,6 +13,7 @@
         <Compile Include="Import\Metadata.fs" />
         <Compile Include="Import\Impl.fs" />
         <Compile Include="Rendering\Impl.fs" />
+        <Compile Include="Plugin.fs" />
     </ItemGroup>
 
     <ItemGroup>
