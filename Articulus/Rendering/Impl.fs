@@ -3,6 +3,7 @@
 open System
 open System.IO
 open System.Text
+open System.Text.Json
 open System.Text.Json.Serialization
 open Articulus.Store
 open FDOM.Core.Common
@@ -12,17 +13,31 @@ open Fluff.Core
 [<AutoOpen>]
 module Impl =
 
+    type FragmentDateFormatConverter(format: string) =
+        inherit JsonConverter<DateTime>()
+        
+        override fdfc.Write(writer: Utf8JsonWriter, date: DateTime, options: JsonSerializerOptions) =
+            writer.WriteStringValue(date.ToString(format))
+            
+        override fdfc.Read(reader: byref<Utf8JsonReader>, typeToConvert: Type, options: JsonSerializerOptions) =
+            DateTime.ParseExact(reader.GetString(), format, null)
+            
     [<CLIMutable>]
     type FragmentData =
         { [<JsonPropertyName("title")>]
           Title: string
           [<JsonPropertyName("items")>]
           Items: FragmentDataItem seq }
+        
+        member fd.Serialize(dateFormat: string) =
+            let jso = JsonSerializerOptions()
+            jso.Converters.Add(FragmentDateFormatConverter(dateFormat))
+            JsonSerializer.Serialize(fd, jso)
 
     and [<CLIMutable>] FragmentDataItem =
-        { [<JsonPropertyName("titleHtml")>]
+        { [<JsonPropertyName("title_html")>]
           TitleHtml: string
-          [<JsonPropertyName("summaryHtml")>]
+          [<JsonPropertyName("summary_html")>]
           SummaryHtml: string
           [<JsonPropertyName("link")>]
           Link: string
